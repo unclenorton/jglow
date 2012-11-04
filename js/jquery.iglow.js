@@ -45,7 +45,7 @@
 		this.each(function(i) {
 			var jImage = $(this);
 			var blurOffset = 5;
-			var ieBlur = conf.blur * 2;
+			var ieBlur = conf.blur;
 
 			if(supportsSvgBlur()) {
 				aImages[i] = new SVGGlow(jImage, i, conf);
