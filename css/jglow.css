@@ -1,0 +1,39 @@
+.top {
+	background: #222;
+
+}
+
+#svg_container
+{
+	float:left;
+}
+
+img,.iglow-wrapper
+{
+	margin: 1em;
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+.lte-ie7 img,
+.lte-ie7 .iglow-wrapper {
+	display: inline;
+	zoom: 1;
+}
+
+.iglow-wrapper
+{
+	position: relative;
+	margin: 1em;
+}
+
+.iglow-wrapper img
+{
+	margin: 0;
+}
+
+.iglow-wrapper img
+{
+	margin: 0;
+}
+
