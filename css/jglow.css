@@ -1,6 +1,9 @@
 .top {
 	background: #222 url('pattern_42.gif') 0 0 repeat scroll;
+}
 
+.bottom {
+	background: transparent url('patterns_2.jpg') 0 0 scroll;
 }
 
 #svg_container

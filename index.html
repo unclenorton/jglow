@@ -5,246 +5,62 @@
 <!--[if IE 9]>    <html class="lte-ie9 ie9"> <![endif]-->
 <!--[if gt IE 9]><!--><html class="no-js"><!--<![endif]-->
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SVG Blur</title>
-<link rel="stylesheet" href="css/jglow.css" />
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery.iglow.js"></script>
-<script type="text/javascript">
-	$(window).load(function(){
-		$('img').click(function(){
-			$(this).iGlow({
-				lighten: 4,
-				turbulence: 0,
-				displace: 0,
-				dilate: 0,
-				erode: 1,
-				blur: 14,
+		<title>SVG Blur</title>
 
-				useImage: true,
-				IEFalloff : 55,
+		<link rel="stylesheet" href="css/jglow.css" />
 
-				fadeInSpeed : 0
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.iglow.js"></script>
+		<script type="text/javascript">
+			$(window).load(function(){
+				$('img').click(function(){
+					$(this).iGlow({
+						lighten: 4,
+						turbulence: 0,
+						displace: 0,
+						dilate: 0,
+						erode: 1,
+						blur: 14,
+
+						useImage: true,
+						IEFalloff : 55,
+
+						fadeInSpeed : 0
+					});
+
+					$(this).parent().animate({
+						top: $(this).position().top -50
+					}, 400);
+				});
+
 			});
+		</script>
 
-			$(this).parent().animate({
-				top: $(this).position().top -50
-			}, 400);
-		});
+	</head>
+	<body>
 
-	});
-</script>
-<style type="text/css">
+		<div class="top">
+			<img src="i/nevermore.jpg" />
+			<img src="i/pt300.jpg" />
+			<img src="i/peak-tuna.jpg" />
+			<img src="i/inception.jpg" />
+			<img src="i/promo.jpg" />
+			<img src="i/shtat.jpg" />
+			<img src="i/missingcat.jpg" />
+		</div>
 
+		<div class="bottom">
+			<img src="i/nevermore.jpg" />	
+			<img src="i/pt300.jpg" />
+			<img src="i/peak-tuna.jpg" />
+			<img src="i/inception.jpg" />
+			<img src="i/promo.jpg" />
+			<img src="i/shtat.jpg" />
+			<img src="i/missingcat.jpg" />
+		</div>
 
-#nyc-text {
-	font-family: "ArtemiusXOTBook", "Segoe UI", arial, sans-serif;
-	font-weight: light;
-	fill: url(#orange_red);
-	font-size: 550%;
-	text-anchor: left;
-	text-decoration: underline;
-}
-
-/*#masked-image { mask: url(#text-mask); }*/
-
-use#outline { stroke: #333333; stroke-width:2px; }
-
-</style>
-</head>
-<body>
-<div id="text_container">
-</div>
-<div class="top">
-	<div class="imagewrapper">
-		<img class="nevermore" src="i/nevermore.jpg" />
-	</div>
-<img src="i/pt300.jpg" />
-<img src="i/peak-tuna.jpg" />
-<img src="i/inception.jpg" />
-<img src="i/promo.jpg" />
-<img src="i/shtat.jpg" />
-<img src="i/missingcat.jpg" />
-</div>
-
-<div style="background: transparent url('css/patterns_2.jpg') 0 0 scroll;">
-
-<img class="nevermore" src="i/nevermore.jpg" />	
-
-<img src="i/pt300.jpg" />
-<img src="i/peak-tuna.jpg" />
-<img src="i/inception.jpg" />
-<img src="i/promo.jpg" />
-<img src="i/shtat.jpg" />
-<img src="i/missingcat.jpg" />
-</div>
-
-<script type="text/javascript">/*
-var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-svg.setAttribute('xmlns',"http://www.w3.org/2000/svg");
-svg.setAttribute('xmlns:xlink',"http://www.w3.org/1999/xlink"); 
-//svg.setAttribute('width',900);
-svg.setAttribute('height', 112);
-
-var defs = document.createElementNS('http://www.w3.org/2000/svg',
-'defs');
-
-var mask = document.createElementNS('http://www.w3.org/2000/svg',
-'mask');
-mask.setAttribute('id','text-mask');
-mask.setAttribute('maskUnits','userSpaceOnUse');
-mask.setAttribute('x','0');
-mask.setAttribute('y','0');
-mask.setAttribute('width','100%');
-mask.setAttribute('height','100%');
-
-var hlink = document.createElementNS('http://www.w3.org/2000/svg','a');
-hlink.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', 'http://payanyway.prj.artlebedev.com.ua/');
-
-var text1 = document.createElementNS('http://www.w3.org/2000/svg','text');
-text1.setAttribute('id','nyc-text');
-text1.setAttribute('x','0%');
-text1.setAttribute('y', '70%');
-
-tn = document.createTextNode('A quick brown fox jumps over the lazy dog');
-text1.appendChild(tn);
-text1.normalize();
-hlink.appendChild(text1);
-svg.appendChild(hlink);
-defs.appendChild(mask);
-
-var grad = document.createElementNS('http://www.w3.org/2000/svg',
-'linearGradient');
-grad.setAttribute('id','orange_red');
-grad.setAttribute('x','0');
-grad.setAttribute('y','0');
-grad.setAttribute('x2','100%');
-grad.setAttribute('y2','0');
-
-var gstop = document.createElementNS('http://www.w3.org/2000/svg',
-'stop');
-gstop.setAttribute('offset','0');
-gstop.setAttribute('style', 'stop-color:rgb(0,0,0)');
-gstop.setAttribute('stop-opacity',1);
-grad.appendChild(gstop);
-
-gstop = document.createElementNS('http://www.w3.org/2000/svg',
-'stop');
-gstop.setAttribute('offset','35%');
-gstop.setAttribute('style','stop-color:rgb(255,50,0)');
-gstop.setAttribute('stop-opacity',1);
-grad.appendChild(gstop);
-
-gstop = document.createElementNS('http://www.w3.org/2000/svg',
-'stop');
-gstop.setAttribute('offset','42%');
-gstop.setAttribute('style','stop-color:rgb(255,255,255)');
-gstop.setAttribute('stop-opacity',1);
-grad.appendChild(gstop);
-
-gstop = document.createElementNS('http://www.w3.org/2000/svg',
-'stop');
-gstop.setAttribute('offset','80%');
-gstop.setAttribute('style','stop-color:rgb(54,42,140)');
-gstop.setAttribute('stop-opacity',1);
-grad.appendChild(gstop);
-
-defs.appendChild(grad);
-svg.appendChild(defs);
-
-var srect = document.createElementNS('http://www.w3.org/2000/svg',
-'rect');
-srect.setAttribute('id','masked-image');
-srect.setAttribute('x',0);
-srect.setAttribute('y',0);
-srect.setAttribute('width',924);
-srect.setAttribute('height', 114);
-srect.setAttribute('style',"fill:url(#orange_red);mask:url(#text-mask);");
-//svg.appendChild(srect);
-
-var tContainer = document.getElementById('text_container');
-tContainer.appendChild(svg);*/
-</script>
-
-<!-- ============================================ -->
-
-<script type="text/javascript">
-/*svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-svg.setAttribute('width',320);
-svg.setAttribute('height', 240);
-
-defs = document.createElementNS('http://www.w3.org/2000/svg',
-'defs');
-
-var filter = document.createElementNS('http://www.w3.org/2000/svg',
-'filter');
-filter.setAttribute('id','gaussian_blur');
-
-var fblend = document.createElementNS('http://www.w3.org/2000/svg',
-'feBlend');
-fblend.setAttribute('in','SourceGraphic');
-fblend.setAttribute('result','lightened');
-fblend.setAttribute('mode', 'screen');
-filter.appendChild(fblend);
-
-fblend = document.createElementNS('http://www.w3.org/2000/svg',
-'feBlend');
-fblend.setAttribute('in','lightened');
-fblend.setAttribute('result','lightened');
-fblend.setAttribute('mode', 'screen');
-filter.appendChild(fblend);
-fblend = document.createElementNS('http://www.w3.org/2000/svg',
-'feBlend');
-fblend.setAttribute('in','lightened');
-fblend.setAttribute('result','lightened');
-fblend.setAttribute('mode', 'screen');
-filter.appendChild(fblend);
-fblend = document.createElementNS('http://www.w3.org/2000/svg',
-'feBlend');
-fblend.setAttribute('in','lightened');
-fblend.setAttribute('result','lightened');
-fblend.setAttribute('mode', 'screen');
-filter.appendChild(fblend);
-
-var gblur = document.createElementNS('http://www.w3.org/2000/svg',
-'feGaussianBlur');
-gblur.setAttribute('in','lightened');
-gblur.setAttribute('stdDeviation', '8');
-filter.appendChild(gblur);
-
-fblend = document.createElementNS('http://www.w3.org/2000/svg',
-'feBlend');
-fblend.setAttribute('in','SourceGraphic');
-fblend.setAttribute('mode', 'normal');
-filter.appendChild(fblend);
-
-defs.appendChild(filter);
-svg.appendChild(defs);
-
-var simage = document.createElementNS('http://www.w3.org/2000/svg',
-'image');
-
-simage.setAttribute('x',40);
-simage.setAttribute('y',40);
-simage.setAttribute('width',280);
-simage.setAttribute('height', 180);
-
-simage.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "i/nevermore.jpg");
-simage.setAttribute('style','filter:url(#gaussian_blur)');
-svg.appendChild(simage);
-
-//var sContainer = document.getElementById('svg_container');
-//sContainer.appendChild(svg);
-*/
-/*var image = $('#svg_container').find('image');
-$('#svg_container').hover(function(){
-	image.removeAttr('style');
-}, function(){
-	image.attr('style', 'filter:url(#gaussian_blur)');
-});*/
-
-</script>
-</body>
+	</body>
 </html>
