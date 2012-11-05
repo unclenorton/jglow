@@ -91,7 +91,16 @@
 		return this;
 	};
 
-	function SVGGlow(jImage, i, conf) {
+	/**
+	 * Creates and returns an SVG object with filters
+	 * set according to the parameters passed to it.
+	 * 
+	 * @param {jQuery} jImage jQuery-wrapped <img> element
+	 * @param {object} conf   Configuration object
+	 * @return {jQuery}	jQuery-wrapped SVG element
+	 */
+	
+	function SVGGlow(jImage, conf) {
 		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 		svg.setAttribute('version', '1.1');
@@ -104,7 +113,7 @@
 		var filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
 		filter.setAttribute('id', 'gaussian_blur');
 
-		//lighten
+		// Lighten
 		var fblend = document.createElementNS('http://www.w3.org/2000/svg', 'feBlend');
 		for(var il = 0; il < conf.lighten; il++) {
 			fblend = document.createElementNS('http://www.w3.org/2000/svg', 'feBlend');
@@ -182,7 +191,15 @@
 		return svg;
 	}
 
-	function MSGlow(jImage, i, conf) {
+	/**
+	 * A polyfill for implementing the glow in IE
+	 * 
+	 * @param {jQuery} jImage jQuery-wrapped <img> element
+	 * @param {object} conf   Configureation object
+	 * @return {jQuery} jQuery-wrapped DOM structure containing a blurred clone of original image
+	 * 
+	 */
+	function MSGlow(jImage, conf) {
 		var jClone = jImage.clone(true).removeAttr('class');
 
 		var lighten = '';
@@ -198,6 +215,10 @@
 		return jClone;
 	}
 
+	/**
+	 * Check for SVG blur filter availability
+	 * @return {boolean}
+	 */
 	function supportsSvgBlur() {
 		if (document.createElementNS) {
 			var blur = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
