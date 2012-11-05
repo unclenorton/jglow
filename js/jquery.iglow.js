@@ -30,7 +30,8 @@
  * 
  */
 
-(function($) {
+(function ($) {
+	"use strict";
 
 	$.iGlow = $.iGlow || {
 		version: '1.0'
@@ -50,21 +51,22 @@
 		fadeInSpeed : 500
 	};
 
-	$.fn.iGlow = function(conf) {
+	$.fn.iGlow = function (conf) {
 
 		//Extend defaults
 		conf = $.extend($.iGlow.conf, conf);
 
-		var aImages = [];
+		var aImages = [],
+			fadeInSpeed = supportsSvgBlur() ? conf.fadeInSpeed : 0;
 
-		var fadeInSpeed = (supportsSvgBlur()) ? conf.fadeInSpeed : 0;
+		this.each(function (i) {
+			var jImage = $(this),
+				blurOffset = 5,
+				ieBlur = conf.blur,
+				glowWrapper,
+				iWrapper;
 
-		this.each(function(i) {
-			var jImage = $(this);
-			var blurOffset = 5;
-			var ieBlur = conf.blur;
-
-			if(supportsSvgBlur()) {
+			if (supportsSvgBlur()) {
 				aImages[i] = new SVGGlow(jImage, conf);
 			} else {
 				conf.ieBlur = ieBlur;
@@ -72,15 +74,16 @@
 				blurOffset = 1;
 			}
 
-			if(!jImage.hasClass('iglow')) {
-				var glowWrapper = $('<div></div>').attr('id', 'iglow-' + i).attr('class', 'iglow').append(aImages[i]);
-				var iWrapper = $('<div></div>').attr('class', 'iglow-wrapper');
+			if (!jImage.hasClass('iglow')) {
+				glowWrapper = $('<div></div>').attr('id', 'iglow-' + i).attr('class', 'iglow').append(aImages[i]);
+				iWrapper = $('<div></div>').attr('class', 'iglow-wrapper');
+
 				jImage.attr('class', 'iglow').css({
 					'position': 'relative',
 					'zIndex': '2'
 				}).wrap(iWrapper);
 
-				if(supportsSvgBlur()) {
+				if (supportsSvgBlur()) {
 					glowWrapper.css({
 						'position': 'absolute',
 						'zIndex': '1',
@@ -88,7 +91,6 @@
 						'top': -conf.blur * blurOffset
 					});
 				} else {
-
 					aImages[i].css({
 						width: '100%',
 						height: '100%'
@@ -116,11 +118,19 @@
 	 * @param {object} conf   Configuration object
 	 * @return {jQuery}	jQuery-wrapped SVG element
 	 */
-	
 	function SVGGlow(jImage, conf) {
+		var svgNS = 'http://www.w3.org/2000/svg',
+			svg = document.createElementNS(svgNS, 'svg'),
+			defs,
+			il,
+			filter,
+			fblend,
+			fturbulence,
+			fdisplacement,
+			fmorph,
+			gblur,
+			simage;
 
-		var svgNS = 'http://www.w3.org/2000/svg';
-		var svg = document.createElementNS(svgNS, 'svg');
 		svg.setAttribute('xmlns', svgNS);
 		svg.setAttribute('version', '1.1');
 
@@ -130,12 +140,13 @@
 
 		defs = document.createElementNS(svgNS, 'defs');
 
-		var filter = document.createElementNS(svgNS, 'filter');
+		filter = document.createElementNS(svgNS, 'filter');
 		filter.setAttribute('id', 'gaussian_blur');
 
 		// Lighten
-		var fblend = document.createElementNS(svgNS, 'feBlend');
-		for(var il = 0; il < conf.lighten; il++) {
+		fblend = document.createElementNS(svgNS, 'feBlend');
+
+		for (il = 0; il < conf.lighten; il++) {
 			fblend = document.createElementNS(svgNS, 'feBlend');
 			fblend.setAttribute('in', ((il) ? 'lightened' : 'SourceGraphic'));
 			fblend.setAttribute('result', 'lightened');
@@ -143,8 +154,8 @@
 			filter.appendChild(fblend);
 		}
 
-		if(conf.turbulence) {
-			var fturbulence = document.createElementNS(svgNS, 'feTurbulence');
+		if (conf.turbulence) {
+			fturbulence = document.createElementNS(svgNS, 'feTurbulence');
 			fturbulence.setAttribute('baseFrequency', "2");
 			fturbulence.setAttribute('numOctaves', "8");
 			fturbulence.setAttribute('seed', '125');
@@ -152,7 +163,7 @@
 			fturbulence.setAttribute('result', 'turb');
 			filter.appendChild(fturbulence);
 
-			var fdisplacement = document.createElementNS(svgNS, 'feDisplacementMap');
+			fdisplacement = document.createElementNS(svgNS, 'feDisplacementMap');
 			fdisplacement.setAttribute('scale', conf.displace);
 			fdisplacement.setAttribute('xChannelSelector', 'R');
 			fdisplacement.setAttribute('yChannelSelector', 'B');
@@ -170,24 +181,21 @@
 			fmorph.setAttribute('result', 'lightened');
 			filter.appendChild(fmorph);
 		}
-		
 		if (conf.erode) {
-			var fmorph = document.createElementNS(svgNS, 'feMorphology');
+			fmorph = document.createElementNS(svgNS, 'feMorphology');
 			fmorph.setAttribute('in', 'lightened');
 			fmorph.setAttribute('operator', 'erode');
 			fmorph.setAttribute('radius', conf.erode);
 			fmorph.setAttribute('result', 'lightened');
-			filter.appendChild(fmorph);	
+			filter.appendChild(fmorph);
 		}
-		
 		if (conf.blur) {
-			var gblur = document.createElementNS(svgNS, 'feGaussianBlur');
+			gblur = document.createElementNS(svgNS, 'feGaussianBlur');
 			gblur.setAttribute('in', 'lightened');
 			gblur.setAttribute('stdDeviation', conf.blur);
 			filter.appendChild(gblur);
 		}
-		
-		if(conf.useImage) {
+		if (conf.useImage) {
 			fblend = document.createElementNS(svgNS, 'feBlend');
 			fblend.setAttribute('in', 'SourceGraphic');
 			fblend.setAttribute('mode', 'lihgten');
@@ -197,7 +205,7 @@
 		defs.appendChild(filter);
 		svg.appendChild(defs);
 
-		var simage = document.createElementNS(svgNS, 'image');
+		simage = document.createElementNS(svgNS, 'image');
 
 		simage.setAttribute('x', conf.blur * 5);
 		simage.setAttribute('y', conf.blur * 5);
@@ -220,10 +228,11 @@
 	 * 
 	 */
 	function MSGlow(jImage, conf) {
-		var jClone = jImage.clone(true).removeAttr('class');
+		var jClone = jImage.clone(true).removeAttr('class'),
+			lighten = '',
+			i;
 
-		var lighten = '';
-		for (var i = 0; i < conf.lighten; i++) {
+		for (i = 0; i < conf.lighten; i++) {
 			lighten += "progid:DXImageTransform.Microsoft.Wave(freq=0, lightStrength=100, strength=1, add=1) ";
 		}
 
@@ -232,8 +241,8 @@
 		// The second filter (Alpha) uses style=2 parameter to implement opacity falloff.
 		jClone.css({
 			filter: lighten
-					+" progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=" + conf.IEFalloff +", style=2)"
-					+" progid:DXImageTransform.Microsoft.Blur(pixelradius="+ (conf.ieBlur) + ")"
+					+ " progid:DXImageTransform.Microsoft.Alpha(opacity=100, finishopacity=" + conf.IEFalloff + ", style=2)"
+					+ " progid:DXImageTransform.Microsoft.Blur(pixelradius=" + (conf.ieBlur) + ")"
 		});
 		return jClone;
 	}
@@ -246,7 +255,7 @@
 		if (document.createElementNS) {
 			var blur = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
 			blur.setAttribute("stdDeviation", "2");
-			return(typeof blur.setStdDeviation !== 'undefined');
+			return (typeof blur.setStdDeviation !== 'undefined');
 		} else {
 			return false;
 		}
