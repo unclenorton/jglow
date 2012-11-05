@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie7 lte-ie7 lt-ie8 lte-ie8 lte-ie9 lt-ie9"> <![endif]-->
+<!--[if IE 7]>    <html class="lte-ie7 lt-ie8 lte-ie8 lte-ie9 lt-ie9"> <![endif]-->
+<!--[if IE 8]>    <html class="lte-ie8 lte-ie9 lt-ie9"> <![endif]-->
+<!--[if IE 9]>    <html class="lte-ie9 ie9"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js"><!--<![endif]-->
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>SVG Blur</title>
+
+		<link rel="stylesheet" href="css/jglow.css" />
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> 
+		<script type="text/javascript" src="js/jquery.iglow.js"></script>
+		<script type="text/javascript">
+			$(window).load(function(){
+				$('img').click(function(){
+					$(this).iGlow({
+						lighten: 4,
+						turbulence: 0,
+						displace: 0,
+						dilate: 0,
+						erode: 1,
+						blur: 14,
+
+						useImage: true,
+						IEFalloff : 55,
+
+						fadeInSpeed : 0
+					});
+
+					$(this).parent().animate({
+						top: $(this).position().top -50
+					}, 400);
+				});
+
+			});
+		</script>
+
+	</head>
+	<body>
+
+		<div class="top">
+			<img src="i/nevermore.jpg" />
+			<img src="i/pt300.jpg" />
+			<img src="i/peak-tuna.jpg" />
+			<img src="i/inception.jpg" />
+			<img src="i/promo.jpg" />
+			<img src="i/shtat.jpg" />
+			<img src="i/missingcat.jpg" />
+		</div>
+
+		<div class="bottom">
+			<img src="i/nevermore.jpg" />	
+			<img src="i/pt300.jpg" />
+			<img src="i/peak-tuna.jpg" />
+			<img src="i/inception.jpg" />
+			<img src="i/promo.jpg" />
+			<img src="i/shtat.jpg" />
+			<img src="i/missingcat.jpg" />
+		</div>
+
+	</body>
+</html>
