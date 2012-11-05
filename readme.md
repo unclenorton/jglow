@@ -6,6 +6,8 @@ The usage is simple:
 
 `$('img').jGlow(options);`
 
+The demo can be seen here:[http://unclenorton.github.com/jglow/](http://unclenorton.github.com/jglow/). Click the images to activate the effect. Animation is added to visually benchmark the performance.
+
 # Options
 
 Currently, the plugin supports the following options:
