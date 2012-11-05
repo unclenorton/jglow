@@ -1,5 +1,5 @@
 # jGlow
-A jQuery plugin that makes images glow.
+A jQuery plugin that makes images glow, creating AmbiLight-like effect.
 
 # Usage
 The usage is simple:
