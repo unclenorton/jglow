@@ -57,7 +57,7 @@
 		conf = $.extend($.iGlow.conf, conf);
 
 		var aImages = [],
-			fadeInSpeed = supportsSvgBlur() ? conf.fadeInSpeed : 0;
+			fadeInSpeed = supportsSvgBlur() || supportsCSSBlur(true) ? conf.fadeInSpeed : 0;
 
 		this.each(function (i) {
 			var jImage = $(this),
@@ -66,7 +66,10 @@
 				glowWrapper,
 				iWrapper;
 
-			if (supportsSvgBlur()) {
+			if (supportsCSSBlur(true)) {
+				console.log('using CSS blur');
+				aImages[i] = new CSSGlow(jImage, conf);
+			} else if (supportsSvgBlur()) {
 				aImages[i] = new SVGGlow(jImage, conf);
 			} else {
 				conf.ieBlur = ieBlur;
@@ -83,7 +86,19 @@
 					'zIndex': '2'
 				}).wrap(iWrapper);
 
-				if (supportsSvgBlur()) {
+				if (supportsCSSBlur(true)) {
+					
+					aImages[i].css({
+						width: '100%',
+						height: '100%'
+					});
+					glowWrapper.css({
+						'position': 'absolute',
+						'zIndex': '1',
+						'left': 0,
+						'top': 0
+					});
+				} else if (supportsSvgBlur()) {
 					glowWrapper.css({
 						'position': 'absolute',
 						'zIndex': '1',
@@ -118,7 +133,7 @@
 	 * @param {object} conf   Configuration object
 	 * @return {jQuery}	jQuery-wrapped SVG element
 	 */
-	function SVGGlow(jImage, conf) {
+	function SVGGlow (jImage, conf) {
 		var svgNS = 'http://www.w3.org/2000/svg',
 			svg = document.createElementNS(svgNS, 'svg'),
 			defs,
@@ -198,7 +213,7 @@
 		if (conf.useImage) {
 			fblend = document.createElementNS(svgNS, 'feBlend');
 			fblend.setAttribute('in', 'SourceGraphic');
-			fblend.setAttribute('mode', 'lihgten');
+			fblend.setAttribute('mode', 'lighten');
 			filter.appendChild(fblend);
 		}
 
@@ -227,7 +242,7 @@
 	 * @return {jQuery} jQuery-wrapped DOM structure containing a blurred clone of original image
 	 * 
 	 */
-	function MSGlow(jImage, conf) {
+	function MSGlow (jImage, conf) {
 		var jClone = jImage.clone(true).removeAttr('class'),
 			lighten = '',
 			i;
@@ -247,6 +262,15 @@
 		return jClone;
 	}
 
+	function CSSGlow (jImage, conf) {
+		var jClone = jImage.clone(true).removeAttr('class');
+		jClone.css({
+			filter : 'blur(' + conf.blur + 'px) ' + 'brightness(' + conf.lighten * 5 + '%) contrast(200%)',
+			webkitFilter : 'blur(' + conf.blur + 'px)' + 'brightness(' + conf.lighten * 5 + '%) contrast(200%)'
+		});
+		return jClone;
+	}
+
 	/**
 	 * Check for SVG blur filter availability
 	 * @return {boolean}
@@ -260,4 +284,36 @@
 			return false;
 		}
 	}
+
+	/**
+	 * Check for CSS filter effect support
+	 * Code from Modernizr.js
+	 * @return {boolean}
+	 */
+	function supportsCSSBlur (enableWebkit) {
+
+		if(enableWebkit === undefined) {
+			enableWebkit = false;
+		}
+
+		//creating an element dynamically
+		var el = document.createElement('div');
+		//adding filter-blur property to it
+		el.style.cssText = ((enableWebkit) ? '-webkit-' : '') + 'filter: blur(2px)';
+
+		//checking whether the style is computed or ignored
+		//And this is not because I don't understand the !! operator
+		//This is because !! is so obscure for learning purposes! :D
+		var test1 = (el.style.length != 0);
+		//checking for false positives of IE
+		//I prefer Modernizr's smart method of browser detection
+		var test2 = (
+			document.documentMode === undefined //non-IE browsers, including ancient IEs
+			|| document.documentMode > 9 //IE compatibility moe
+		);
+
+		//combining test results
+		return test1 && test2;
+	}
+
 })(jQuery);
