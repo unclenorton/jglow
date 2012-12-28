@@ -16,7 +16,7 @@
 		<script type="text/javascript" src="js/jquery.iglow.js"></script>
 		<script type="text/javascript">
 			$(window).load(function(){
-				$('img').click(function(){
+				$('img.original').click(function(){
 					$(this).iGlow({
 						lighten: 4,
 						turbulence: 0,
@@ -25,10 +25,10 @@
 						erode: 1,
 						blur: 14,
 
-						useImage: true,
 						IEFalloff : 55,
 
-						fadeInSpeed : 0
+						fadeInSpeed : 0,
+						forceSVG : $('#forceSVG').is(':checked')
 					});
 
 					$(this).parent().animate({
@@ -41,25 +41,28 @@
 
 	</head>
 	<body>
-
+		<label style="position:relative;display:block;z-index:5;">
+			Force SVG rendering in favor of CSS where possible
+			<input type="checkbox" checked="cheked" name="cb_forceSVG" id="forceSVG" />	
+		</label>
 		<div class="top">
-			<img src="i/nevermore.jpg" />
-			<img src="i/pt300.jpg" />
-			<img src="i/peak-tuna.jpg" />
-			<img src="i/inception.jpg" />
-			<img src="i/promo.jpg" />
-			<img src="i/shtat.jpg" />
-			<img src="i/missingcat.jpg" />
+			<img src="i/nevermore.jpg" class="original" />
+			<img src="i/pt300.jpg" class="original" />
+			<img src="i/peak-tuna.jpg" class="original" />
+			<img src="i/inception.jpg" class="original" />
+			<img src="i/promo.jpg" class="original" />
+			<img src="i/shtat.jpg" class="original" />
+			<img src="i/missingcat.jpg" class="original" />
 		</div>
 
 		<div class="bottom">
-			<img src="i/nevermore.jpg" />	
-			<img src="i/pt300.jpg" />
-			<img src="i/peak-tuna.jpg" />
-			<img src="i/inception.jpg" />
-			<img src="i/promo.jpg" />
-			<img src="i/shtat.jpg" />
-			<img src="i/missingcat.jpg" />
+			<img src="i/nevermore.jpg" class="original" />	
+			<img src="i/pt300.jpg" class="original" />
+			<img src="i/peak-tuna.jpg" class="original" />
+			<img src="i/inception.jpg" class="original" />
+			<img src="i/promo.jpg" class="original" />
+			<img src="i/shtat.jpg" class="original" />
+			<img src="i/missingcat.jpg" class="original" />
 		</div>
 
 	</body>

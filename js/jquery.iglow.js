@@ -20,14 +20,9 @@
  * - IEFalloff {0-100}: The second parameter for IE's falloff transparency filter. Default is 55. Arguably makes the effect
  * look better over dark backgrounds when set to lower values.
  * - fadeInSpeed: The parameter for jQuery.fadeIn animation used in showing the blur effect. Default is 500.
+ * - forceSVG: Specify whether to force using SVG filter instead of CSS one. As of Chrome 23, this results in faster rendering,
+ * though CSS is of course preferrable.
  *
- *
- * TODO:
- * 1. Implement CSS filters for supporting browsers (especially the upcoming version of Firefox).
- * 2. Find a neater way for displaying blur with IE filters.
- * 3. ?????
- * 4. PROFIT!
- * 
  */
 
 (function ($) {
@@ -45,7 +40,8 @@
 		dilate: 1,
 		erode: 1,
 		blur: 14,
-		useImage: false,
+		useImage: true,
+		forceSVG : false,
 
 		IEFalloff : 55,
 		fadeInSpeed : 500
@@ -57,7 +53,7 @@
 		conf = $.extend($.iGlow.conf, conf);
 
 		var aImages = [],
-			fadeInSpeed = supportsSvgBlur() || supportsCSSBlur(true) ? conf.fadeInSpeed : 0;
+			fadeInSpeed = (supportsSvgBlur() || (supportsCSSBlur(true) && !conf.forceSVG)) ? conf.fadeInSpeed : 0;
 
 		this.each(function (i) {
 			var jImage = $(this),
@@ -66,8 +62,7 @@
 				glowWrapper,
 				iWrapper;
 
-			if (supportsCSSBlur(true)) {
-				console.log('using CSS blur');
+			if (supportsCSSBlur(true) && !conf.forceSVG) {
 				aImages[i] = new CSSGlow(jImage, conf);
 			} else if (supportsSvgBlur()) {
 				aImages[i] = new SVGGlow(jImage, conf);
@@ -86,8 +81,7 @@
 					'zIndex': '2'
 				}).wrap(iWrapper);
 
-				if (supportsCSSBlur(true)) {
-					
+				if (supportsCSSBlur(true) && !conf.forceSVG) {
 					aImages[i].css({
 						width: '100%',
 						height: '100%'
@@ -158,7 +152,7 @@
 		filter = document.createElementNS(svgNS, 'filter');
 		filter.setAttribute('id', 'gaussian_blur');
 
-		// Lighten
+		// Lighten to create the glow effect instead of simple blurring
 		fblend = document.createElementNS(svgNS, 'feBlend');
 
 		for (il = 0; il < conf.lighten; il++) {
@@ -196,6 +190,7 @@
 			fmorph.setAttribute('result', 'lightened');
 			filter.appendChild(fmorph);
 		}
+
 		if (conf.erode) {
 			fmorph = document.createElementNS(svgNS, 'feMorphology');
 			fmorph.setAttribute('in', 'lightened');
@@ -204,12 +199,14 @@
 			fmorph.setAttribute('result', 'lightened');
 			filter.appendChild(fmorph);
 		}
+
 		if (conf.blur) {
 			gblur = document.createElementNS(svgNS, 'feGaussianBlur');
 			gblur.setAttribute('in', 'lightened');
 			gblur.setAttribute('stdDeviation', conf.blur);
 			filter.appendChild(gblur);
 		}
+
 		if (conf.useImage) {
 			fblend = document.createElementNS(svgNS, 'feBlend');
 			fblend.setAttribute('in', 'SourceGraphic');
@@ -305,6 +302,7 @@
 		//And this is not because I don't understand the !! operator
 		//This is because !! is so obscure for learning purposes! :D
 		var test1 = (el.style.length != 0);
+
 		//checking for false positives of IE
 		//I prefer Modernizr's smart method of browser detection
 		var test2 = (
