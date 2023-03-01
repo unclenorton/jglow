@@ -6,7 +6,7 @@ The usage is simple:
 
 `$('img').jGlow(options);`
 
-The demo can be seen here:[http://unclenorton.github.com/jglow/](http://unclenorton.github.com/jglow/). Click the images to activate the effect. Animation is added to visually benchmark the performance.
+The demo can be seen here:[https://unclenorton.github.io/jglow/](https://unclenorton.github.io/jglow/). Click the images to activate the effect. Animation is added to visually benchmark the performance.
 
 # Options
 
